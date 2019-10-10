@@ -1,4 +1,5 @@
 language: python
+python: 3.7
 dist: xenial
 cache: false
 env:
@@ -7,40 +8,35 @@ env:
     - SEGFAULT_SIGNALS=all
 matrix:
   include:
-    - python: '3.6'
-      env:
-        - TOXENV=check
-    - python: '3.6'
-      env:
-        - TOXENV=docs
-    - env:
-        - TOXENV=py27
-      python: '2.7'
-    - env:
-        - TOXENV=py34
-      python: '3.4'
-    - env:
-        - TOXENV=py35
-      python: '3.5'
     - env:
         - TOXENV=py36
       python: '3.6'
+      stage: tox
     - env:
         - TOXENV=py37
       python: '3.7'
-    - env:
-        - TOXENV=pypy
-      python: 'pypy'
-    - env:
-        - TOXENV=pypy3
-        - TOXPYTHON=pypy3
-      python: 'pypy3'
+      stage: tox
+
+    - stage: test
+      python: '3.7'
+      install:
+        - pipenv install --dev --ignore-pipfile --deploy
+      before_script: # code coverage tool
+         - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+         - chmod +x ./cc-test-reporter
+         - ./cc-test-reporter before-build
+      script: pytest --cov-report xml --cov-report term
+      after_script:
+        - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+stages:
+    - test
+    - tox
 before_install:
   - python --version
   - uname -a
   - lsb_release -a || true
 install:
-  - python -mpip install --progress-bar=off tox -rci/requirements.txt
+  - python -mpip install --progress-bar=off tox-travis -rci/requirements.txt
   - virtualenv --version
   - easy_install --version
   - pip --version
