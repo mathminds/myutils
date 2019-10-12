@@ -14,8 +14,16 @@ from os.path import splitext
 from setuptools import find_packages
 from setuptools import setup
 
+from pkg_resources import get_distribution, DistributionNotFound
+
 
 def read(*names, **kwargs):
+    # try:
+    #     __version__ = get_distribution(__name__).version
+    # except DistributionNotFound:
+    #     # package is not installed
+    #     pass
+
     with io.open(
         join(dirname(__file__), *names),
         encoding=kwargs.get('encoding', 'utf8')
@@ -28,7 +36,9 @@ setup(
     use_scm_version={
         'local_scheme': 'dirty-tag',
         'write_to': 'src/csci_utils/_version.py',
-        'fallback_version': '0.0.0',
+        # "root": ".",
+        "relative_to": __file__,
+        # 'fallback_version': '0.0.0',
     },
     description='An example package. Generated with cookiecutter-pylibrary.',
     long_description='%s\n%s' % (
@@ -55,7 +65,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
-        # uncomment if you test on these interpreters:
+        # # uncomment if you test on these interpreters:
         # 'Programming Language :: Python :: Implementation :: IronPython',
         # 'Programming Language :: Python :: Implementation :: Jython',
         # 'Programming Language :: Python :: Implementation :: Stackless',

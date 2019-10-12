@@ -16,7 +16,6 @@ matrix:
         - TOXENV=py37
       python: '3.7'
       stage: tox
-
     - stage: test
       python: '3.7'
       install:
