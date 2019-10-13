@@ -79,6 +79,7 @@ setup(
         'xlrd',
         'pyarrow',
         'openpyxl',
+        'setuptools_scm',
 
     ],
     extras_require={
