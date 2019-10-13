@@ -14,16 +14,8 @@ from os.path import splitext
 from setuptools import find_packages
 from setuptools import setup
 
-from pkg_resources import get_distribution, DistributionNotFound
-
 
 def read(*names, **kwargs):
-    # try:
-    #     __version__ = get_distribution(__name__).version
-    # except DistributionNotFound:
-    #     # package is not installed
-    #     pass
-
     with io.open(
         join(dirname(__file__), *names),
         encoding=kwargs.get('encoding', 'utf8')
@@ -34,12 +26,11 @@ def read(*names, **kwargs):
 setup(
     name='csci-utils',
     use_scm_version={
-        'local_scheme': 'dirty-tag',
         'write_to': 'src/csci_utils/_version.py',
-        # "root": ".",
-        "relative_to": __file__,
-        # 'fallback_version': '0.0.0',
+        # 'write_to_template': '__version__ = "{version}"',
+        # 'tag_regex': r'^(?P<prefix>v)?(?P<version>[^\+]+)(?P<suffix>.*)?$',
     },
+
     description='An example package. Generated with cookiecutter-pylibrary.',
     long_description='%s\n%s' % (
         re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub('', read('README.rst')),
@@ -89,9 +80,9 @@ setup(
         #   'rst': ['docutils>=0.11'],
         #   ':python_version=="2.6"': ['argparse'],
     },
-    setup_requires=[
-        'setuptools_scm>=3.3.1',
-    ],
+    # setup_requires=[
+    #     'setuptools_scm>=3.3.1',
+    # ],
     entry_points={
         'console_scripts': [
             'csci-utils = csci_utils.cli:main',
