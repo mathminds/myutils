@@ -11,4 +11,14 @@ Why does this file exist, and why __main__? For more info, read:
 from csci_utils.cli import main
 
 if __name__ == "__main__":
+    # from pkg_resources import get_distribution, DistributionNotFound
+    #
+    # try:
+    #     __version__ = get_distribution(__name__).version
+    #
+    # except DistributionNotFound:
+    #     print("package is not installed")
+    #     pass
+
     main()
+
