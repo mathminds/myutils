@@ -6,7 +6,7 @@ import tempfile
 from atomicwrites import atomic_write as _backend_writer, AtomicWriter
 import io as io2
 import pandas as pd
-
+from csci_utils.hash_str import get_csci_salt, get_user_id, hash_str
 
 # You probably need to inspect and override some internals of the package
 class SuffixWriter(AtomicWriter):
@@ -55,6 +55,18 @@ def atomic_write(file, mode='w', as_file=True, new_default='asdf', **kwargs):
         else:  # otherwise return the temporary file path string
             yield f.name
         # yield f
+
+
+def get_user_hash(username, salt=None):
+    """Converts username string to hash digest
+
+    :param username: string to hash
+    :param salt: add randomness to the hashing
+    :return: hash digest of input
+    """
+    # get salt if provided else retrieve it from environment variables
+    salt = salt or get_csci_salt()
+    return hash_str(username, salt=salt)
 
 
 def convert_excel_to_parquet(data_source):

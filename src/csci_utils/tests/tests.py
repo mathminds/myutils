@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Tests for `pset_1` package."""
+"""Tests for `csci_utils` package."""
 
 import os
 import pandas as pd
@@ -9,25 +9,24 @@ from tempfile import TemporaryDirectory
 from unittest import TestCase
 from contextlib import contextmanager
 
-# from pset_1.hash_str import hash_str, get_csci_salt, get_user_id
-# from pset_1.io import atomic_write
+from csci_utils.hash_str import hash_str, get_csci_salt, get_user_id
+from csci_utils.io import atomic_write
 from csci_utils.io import (
-    # get_user_hash,
+    get_user_hash,
     convert_excel_to_parquet,
     read_parquet_columns,
 )
-from csci_utils.io import atomic_write
 
-# @contextmanager
-# def set_env(**kwargs):
-#     """context manager used for temporarily setting os environment variables"""
-#     _environ = dict(os.environ)
-#     os.environ.update(kwargs)
-#     try:
-#         yield
-#     finally:
-#         os.environ.clear()
-#         os.environ.update(_environ)
+@contextmanager
+def set_env(**kwargs):
+    """context manager used for temporarily setting os environment variables"""
+    _environ = dict(os.environ)
+    os.environ.update(kwargs)
+    try:
+        yield
+    finally:
+        os.environ.clear()
+        os.environ.update(_environ)
 
 
 class FakeFileFailure(IOError):
@@ -35,79 +34,79 @@ class FakeFileFailure(IOError):
 
     pass
 
-#
-# class HashTests(TestCase):
-#     # Tests for 'hash_str'
-#     def test_basic(self):
-#         """basic test to ensure hash is computed properly"""
-#         self.assertEqual(hash_str("world!", salt="hello, ").hex()[:6], "68e656")
-#
-#     def test_empty_string(self):
-#         """ensure empty string and salt return a valid hash"""
-#         self.assertEqual(hash_str("", salt="").hex()[:6], "e3b0c4")
-#
-#     def test_nonstring_input(self):
-#         """ensure invalid input types raise an error"""
-#         # invalid input type to hash
-#         self.assertRaises(TypeError, hash_str, 12345.6789)
-#         # invalid salt type
-#         self.assertRaises(TypeError, hash_str, "hello", salt=-57)
-#
-#     def test_diff_inputs_diff_hash(self):
-#         """ensure different inputs lead to different hashes"""
-#         # same strings, different salts
-#         self.assertNotEqual(
-#             hash_str("mystring", salt="mysalt1").hex(),
-#             hash_str("mystring", salt="mysalt2").hex(),
-#         )
-#         # different strings, same salts
-#         self.assertNotEqual(
-#             hash_str("mystring1", salt="mysalt").hex(),
-#             hash_str("mystring2", salt="mysalt").hex(),
-#         )
-#
-#     # Tests for 'get_user_hash'
-#     def test_user_hash_with_salt(self):
-#         """ensure user hash is computed properly when username and salt are provided"""
-#         self.assertEqual(get_user_hash("johndoe", salt="jane").hex()[:6], "fb0bf4")
-#
-#     def test_user_hash_without_salt(self):
-#         """ensure user hash is computed properly when username alone is provided"""
-#         salt_bytes = "my salt".encode()
-#         salt_hex = salt_bytes.hex()
-#         with set_env(CSCI_SALT=salt_hex):
-#             expected = hash_str("johndoe", salt=salt_bytes).hex()[:6]
-#             actual = get_user_hash("johndoe").hex()[:6]
-#             self.assertEqual(expected, actual)
-#
-#     def test_user_hash_empty_salt(self):
-#         """ensure user hash is computed properly with empty string as salt"""
-#         salt_bytes = "my salt".encode()
-#         salt_hex = salt_bytes.hex()
-#         with set_env(CSCI_SALT=salt_hex):
-#             expected = hash_str("johndoe", salt=salt_bytes).hex()[:6]
-#             actual = get_user_hash("johndoe", salt="").hex()[:6]
-#             self.assertEqual(expected, actual)
-#
-#     # Tests for 'get_user_id'
-#     def test_basic_user_id_hash(self):
-#         """ensure user id hash is computed properly and the same regardless of letter case"""
-#         salt_bytes = "my salt".encode()
-#         salt_hex = salt_bytes.hex()
-#         with set_env(CSCI_SALT=salt_hex):
-#             # ensure we get the correct hash regardless of the letter case used
-#             self.assertEqual(get_user_id("johndoe"), "7d324c87")
-#             self.assertEqual(get_user_id("JohnDoe"), "7d324c87")
-#             self.assertEqual(get_user_id("johndoe".upper()), "7d324c87")
-#
-#
-# class SaltTests(TestCase):
-#     def test_csci_salt(self):
-#         """ensure SALT environment variable is properly retrieved"""
-#         salt_bytes = "my csci salt".encode()
-#         salt_hex = salt_bytes.hex()
-#         with set_env(CSCI_SALT=salt_hex):
-#             self.assertEqual(get_csci_salt(), salt_bytes)
+
+class HashTests(TestCase):
+    # Tests for 'hash_str'
+    def test_basic(self):
+        """basic test to ensure hash is computed properly"""
+        self.assertEqual(hash_str("world!", salt="hello, ").hex()[:6], "68e656")
+
+    def test_empty_string(self):
+        """ensure empty string and salt return a valid hash"""
+        self.assertEqual(hash_str("", salt="").hex()[:6], "e3b0c4")
+
+    def test_nonstring_input(self):
+        """ensure invalid input types raise an error"""
+        # invalid input type to hash
+        self.assertRaises(TypeError, hash_str, 12345.6789)
+        # invalid salt type
+        self.assertRaises(TypeError, hash_str, "hello", salt=-57)
+
+    def test_diff_inputs_diff_hash(self):
+        """ensure different inputs lead to different hashes"""
+        # same strings, different salts
+        self.assertNotEqual(
+            hash_str("mystring", salt="mysalt1").hex(),
+            hash_str("mystring", salt="mysalt2").hex(),
+        )
+        # different strings, same salts
+        self.assertNotEqual(
+            hash_str("mystring1", salt="mysalt").hex(),
+            hash_str("mystring2", salt="mysalt").hex(),
+        )
+
+    # Tests for 'get_user_hash'
+    def test_user_hash_with_salt(self):
+        """ensure user hash is computed properly when username and salt are provided"""
+        self.assertEqual(get_user_hash("johndoe", salt="jane").hex()[:6], "fb0bf4")
+
+    def test_user_hash_without_salt(self):
+        """ensure user hash is computed properly when username alone is provided"""
+        salt_bytes = "my salt".encode()
+        salt_hex = salt_bytes.hex()
+        with set_env(CSCI_SALT=salt_hex):
+            expected = hash_str("johndoe", salt=salt_bytes).hex()[:6]
+            actual = get_user_hash("johndoe").hex()[:6]
+            self.assertEqual(expected, actual)
+
+    def test_user_hash_empty_salt(self):
+        """ensure user hash is computed properly with empty string as salt"""
+        salt_bytes = "my salt".encode()
+        salt_hex = salt_bytes.hex()
+        with set_env(CSCI_SALT=salt_hex):
+            expected = hash_str("johndoe", salt=salt_bytes).hex()[:6]
+            actual = get_user_hash("johndoe", salt="").hex()[:6]
+            self.assertEqual(expected, actual)
+
+    # Tests for 'get_user_id'
+    def test_basic_user_id_hash(self):
+        """ensure user id hash is computed properly and the same regardless of letter case"""
+        salt_bytes = "my salt".encode()
+        salt_hex = salt_bytes.hex()
+        with set_env(CSCI_SALT=salt_hex):
+            # ensure we get the correct hash regardless of the letter case used
+            self.assertEqual(get_user_id("johndoe"), "7d324c87")
+            self.assertEqual(get_user_id("JohnDoe"), "7d324c87")
+            self.assertEqual(get_user_id("johndoe".upper()), "7d324c87")
+
+
+class SaltTests(TestCase):
+    def test_csci_salt(self):
+        """ensure SALT environment variable is properly retrieved"""
+        salt_bytes = "my csci salt".encode()
+        salt_hex = salt_bytes.hex()
+        with set_env(CSCI_SALT=salt_hex):
+            self.assertEqual(get_csci_salt(), salt_bytes)
 
 
 class AtomicWriteTests(TestCase):
