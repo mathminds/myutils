@@ -14,12 +14,22 @@ from os.path import splitext
 from setuptools import find_packages
 from setuptools import setup
 
+from ast import literal_eval
+import os
+DOCKER_DEV = literal_eval(os.environ.get("DEV_CSCI_UTILS", "0"))
 
 def read(*names, **kwargs):
-    with io.open(
-        join(dirname(__file__), *names), encoding=kwargs.get("encoding", "utf8")
-    ) as fh:
-        return fh.read()
+    try:
+        with io.open(
+            join(dirname(__file__), *names), encoding=kwargs.get("encoding", "utf8")
+        ) as fh:
+            return fh.read()
+    except FileNotFoundError:
+        if DOCKER_DEV:
+            return ""
+        raise
+
+
 
 
 setup(
@@ -28,7 +38,7 @@ setup(
         "write_to": "src/csci_utils/_version.py",
         # 'write_to_template': '__version__ = "{version}"',
         # 'tag_regex': r'^(?P<prefix>v)?(?P<version>[^\+]+)(?P<suffix>.*)?$',
-    },
+    } if not DOCKER_DEV else False,
     description="An example package. Generated with cookiecutter-pylibrary.",
     long_description="%s\n%s"
     % (
