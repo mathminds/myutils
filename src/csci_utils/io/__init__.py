@@ -1,6 +1,7 @@
 from contextlib import contextmanager
 import os
 import tempfile
+
 # You can import and rename things to work with them internally,
 # without exposing them publicly or to avoid naming conflicts!
 from atomicwrites import atomic_write as _backend_writer, AtomicWriter
@@ -10,19 +11,19 @@ from csci_utils.hash_str import get_csci_salt, get_user_id, hash_str
 
 # You probably need to inspect and override some internals of the package
 class SuffixWriter(AtomicWriter):
-
     def get_fileobject(self, dir=None, **kwargs):
-        '''Return the temporary file to use.'''
+        """Return the temporary file to use."""
         if dir is None:
             dir = os.path.normpath(os.path.dirname(self._path))
-        descriptor, name = tempfile.mkstemp(suffix=os.path.splitext(self._path)[-1], prefix='tmp',
-                                            dir=dir)
+        descriptor, name = tempfile.mkstemp(
+            suffix=os.path.splitext(self._path)[-1], prefix="tmp", dir=dir
+        )
         # io.open() will take either the descriptor or the name, but we need
         # the name later for commit()/replace_atomic() and couldn't find a way
         # to get the filename from the descriptor.
         os.close(descriptor)
-        kwargs['mode'] = self._mode
-        kwargs['file'] = name
+        kwargs["mode"] = self._mode
+        kwargs["file"] = name
         return io2.open(**kwargs)
 
     @contextmanager
@@ -42,8 +43,9 @@ class SuffixWriter(AtomicWriter):
                 except Exception:
                     pass
 
+
 @contextmanager
-def atomic_write(file, mode='w', as_file=True, new_default='asdf', **kwargs):
+def atomic_write(file, mode="w", as_file=True, new_default="asdf", **kwargs):
 
     # You can override things just fine...
     with _backend_writer(file, writer_cls=SuffixWriter, **kwargs) as f:
@@ -97,6 +99,7 @@ def read_parquet_columns(parquet_file, columns):
     # read only specified columns and return them
     data = pd.read_parquet(parquet_file, engine="pyarrow", columns=columns)
     return data
+
 
 #
 # @contextmanager
