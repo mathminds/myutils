@@ -9,6 +9,13 @@ However, this can be burdensome if you need a new package for *every little
 thing.*  Here, we will explore a compromise paradigm that will simultaneously
 give us isolation and repeatability without creating needless boilerplate.
 
+[![Build Status](https://travis-ci.com/csci-e-29/2019fa-csci-utils-mathuser0.svg?token=LkdoyTuk6RfE3Saz9XGF&branch=master)](https://travis-ci.com/csci-e-29/2019fa-csci-utils-mathuser0)
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/98956aa2be7590ca0028/maintainability)](https://codeclimate.com/repos/5da3aa586a7fb701b8000676/maintainability)
+
+[![Test Coverage](https://api.codeclimate.com/v1/badges/98956aa2be7590ca0028/test_coverage)](https://codeclimate.com/repos/5da3aa586a7fb701b8000676/test_coverage)
+
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
