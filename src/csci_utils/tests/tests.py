@@ -11,11 +11,8 @@ from contextlib import contextmanager
 
 from csci_utils.hash_str import hash_str, get_csci_salt, get_user_id
 from csci_utils.io import atomic_write
-from csci_utils.io import (
-    get_user_hash,
-    convert_excel_to_parquet,
-    read_parquet_columns,
-)
+from csci_utils.io import get_user_hash, convert_excel_to_parquet, read_parquet_columns
+
 
 @contextmanager
 def set_env(**kwargs):

@@ -17,70 +17,70 @@ from setuptools import setup
 
 def read(*names, **kwargs):
     with io.open(
-        join(dirname(__file__), *names),
-        encoding=kwargs.get('encoding', 'utf8')
+        join(dirname(__file__), *names), encoding=kwargs.get("encoding", "utf8")
     ) as fh:
         return fh.read()
 
 
 setup(
-    name='csci-utils',
+    name="csci-utils",
     use_scm_version={
-        'write_to': 'src/csci_utils/_version.py',
+        "write_to": "src/csci_utils/_version.py",
         # 'write_to_template': '__version__ = "{version}"',
         # 'tag_regex': r'^(?P<prefix>v)?(?P<version>[^\+]+)(?P<suffix>.*)?$',
     },
-
-    description='An example package. Generated with cookiecutter-pylibrary.',
-    long_description='%s\n%s' % (
-        re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub('', read('README.rst')),
-        re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst'))
+    description="An example package. Generated with cookiecutter-pylibrary.",
+    long_description="%s\n%s"
+    % (
+        re.compile("^.. start-badges.*^.. end-badges", re.M | re.S).sub(
+            "", read("README.rst")
+        ),
+        re.sub(":[a-z]+:`~?(.*?)`", r"``\1``", read("CHANGELOG.rst")),
     ),
-    author='Christopher Lee',
-    author_email='chl2967@g.harvard.edu',
-    url='https://github.com/csci-e-29/2019fa-csci-utils-mathuser0',
-    packages=find_packages('src'),
-    package_dir={'': 'src'},
-    py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
+    author="Christopher Lee",
+    author_email="chl2967@g.harvard.edu",
+    url="https://github.com/csci-e-29/2019fa-csci-utils-mathuser0",
+    packages=find_packages("src"),
+    package_dir={"": "src"},
+    py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
     include_package_data=True,
     zip_safe=False,
     classifiers=[
         # complete classifier list: http://pypi.python.org/pypi?%3Aaction=list_classifiers
-        'Development Status :: 5 - Production/Stable',
-        'Intended Audience :: Developers',
-        'Operating System :: Unix',
-        'Operating System :: POSIX',
-        'Operating System :: Microsoft :: Windows',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: Implementation :: CPython',
-        'Programming Language :: Python :: Implementation :: PyPy',
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "Operating System :: Unix",
+        "Operating System :: POSIX",
+        "Operating System :: Microsoft :: Windows",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: Implementation :: CPython",
+        "Programming Language :: Python :: Implementation :: PyPy",
         # # uncomment if you test on these interpreters:
         # 'Programming Language :: Python :: Implementation :: IronPython',
         # 'Programming Language :: Python :: Implementation :: Jython',
         # 'Programming Language :: Python :: Implementation :: Stackless',
-        'Topic :: Utilities',
-        'Private :: Do Not Upload',
+        "Topic :: Utilities",
+        "Private :: Do Not Upload",
     ],
     project_urls={
         # 'Documentation': 'https://2019fa-csci-utils-mathuser0.readthedocs.io/',
         # 'Changelog': 'https://2019fa-csci-utils-mathuser0.readthedocs.io/en/latest/changelog.html',
-        'Issue Tracker': 'https://github.com/csci-e-29/2019fa-csci-utils-mathuser0/issues',
+        # "Issue Tracker": "https://github.com/csci-e-29/2019fa-csci-utils-mathuser0/issues"
     },
     keywords=[
         # eg: 'keyword1', 'keyword2', 'keyword3',
     ],
-    python_requires='>=3.6',
+    python_requires=">=3.6",
     install_requires=[
         # eg: 'aspectlib==1.1.1', 'six>=1.7',
-        'atomicwrites==1.3.0',
-        'pandas',
-        'xlrd',
-        'pyarrow',
-        'openpyxl',
-        'setuptools_scm',
-
+        "atomicwrites==1.3.0",
+        "pandas",
+        "xlrd",
+        "pyarrow",
+        "openpyxl",
+        "setuptools_scm",
     ],
     extras_require={
         # eg:
@@ -90,9 +90,5 @@ setup(
     # setup_requires=[
     #     'setuptools_scm>=3.3.1',
     # ],
-    entry_points={
-        'console_scripts': [
-            'csci-utils = csci_utils.cli:main',
-        ]
-    },
+    entry_points={"console_scripts": ["csci-utils = csci_utils.cli:main"]},
 )
