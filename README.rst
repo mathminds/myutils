@@ -30,7 +30,7 @@ Overview
 
 .. |commits-since| image:: https://img.shields.io/github/commits-since/csci-e-29/2019fa-csci-utils-mathuser0/v0.0.0.svg
     :alt: Commits since latest release
-    :target: https://github.com/csci-e-29/2019fa-csci-utils-mathuser0/compare/v0.0.0...master
+    :target: https://github.com/csci-e-29/2019fa-csci-utils-mathuser0/compare/master...develop
 
 
 
