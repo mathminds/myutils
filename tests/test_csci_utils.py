@@ -1,6 +1,6 @@
+from unittest import TestCase
 
-from csci_utils.cli import main
 
-
-def test_main():
-    main([])
+class HashTests(TestCase):
+    def test_data(self):
+        self.assertEqual(5, 5)

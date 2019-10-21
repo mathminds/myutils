@@ -19,17 +19,18 @@ Overview
     :target: https://readthedocs.org/projects/2019fa-csci-utils-mathuser0
     :alt: Documentation Status
 
-.. |travis| image:: https://api.travis-ci.org/csci-e-29/2019fa-csci-utils-mathuser0.svg?branch=master
+.. |travis| image:: https://travis-ci.com/csci-e-29/2019fa-csci-utils-mathuser0.svg?token=LkdoyTuk6RfE3Saz9XGF&branch=master
     :alt: Travis-CI Build Status
-    :target: https://travis-ci.org/csci-e-29/2019fa-csci-utils-mathuser0
+    :target: https://travis-ci.com/csci-e-29/2019fa-csci-utils-mathuser0
 
-.. |codeclimate| image:: https://codeclimate.com/github/csci-e-29/2019fa-csci-utils-mathuser0/badges/gpa.svg
-   :target: https://codeclimate.com/github/csci-e-29/2019fa-csci-utils-mathuser0
-   :alt: CodeClimate Quality Status
+.. |codeclimate| image:: https://api.codeclimate.com/v1/badges/98956aa2be7590ca0028/maintainability
+    :target: https://codeclimate.com/repos/5da3aa586a7fb701b8000676/maintainability
+    :alt: Maintainability
+
 
 .. |commits-since| image:: https://img.shields.io/github/commits-since/csci-e-29/2019fa-csci-utils-mathuser0/v0.0.0.svg
     :alt: Commits since latest release
-    :target: https://github.com/csci-e-29/2019fa-csci-utils-mathuser0/compare/v0.0.0...master
+    :target: https://github.com/csci-e-29/2019fa-csci-utils-mathuser0/compare/master...develop
 
 
 
