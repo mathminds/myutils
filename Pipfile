@@ -11,7 +11,7 @@ tox = "*"
 tox-travis = "*"
 
 [packages]
-csci-utils = {editable = true,path = "."}
+csci-utils = {editable = true,git = "https://github.com/csci-e-29/2019fa-csci-utils-mathuser0"}
 setuptools-scm = "*"
 
 [requires]
