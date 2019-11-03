@@ -10,7 +10,7 @@ tox = "*"
 tox-travis = "*"
 
 [packages]
-csci-utils = {editable = true,extras = ["all"], path = "."}
+csci-utils = {editable = true,extras = ["all"],path = "."}
 setuptools-scm = "*"
 
 [requires]

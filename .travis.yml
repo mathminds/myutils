@@ -11,10 +11,14 @@ matrix:
     - env:
         - TOXENV=py36
       python: '3.6'
+      install:
+          - pipenv install -e .[all]
       stage: tox
     - env:
         - TOXENV=py37
       python: '3.7'
+      install:
+          - pipenv install -e .[all]
       stage: tox
     - stage: test
       python: '3.7'
