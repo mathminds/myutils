@@ -80,17 +80,18 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         # eg: 'aspectlib==1.1.1', 'six>=1.7',
-        "atomicwrites==1.3.0",
+        "atomicwrites>=1.3.0",
+        "numpy>=1.1.0",
         "pandas",
         "xlrd",
         "pyarrow",
         "openpyxl",
         "setuptools_scm",
-        # "luigi",
+        "luigi",
     ],
-    extras_require=extras,
-    # setup_requires=[
-    #     'setuptools_scm>=3.3.1',
-    # ],
+    # extras_require=extras,
+    setup_requires=[
+        'setuptools_scm>=3.3.1',
+    ],
     entry_points={"console_scripts": ["csci-utils = csci_utils.cli:main"]},
 )

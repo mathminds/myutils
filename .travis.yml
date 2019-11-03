@@ -11,14 +11,10 @@ matrix:
     - env:
         - TOXENV=py36
       python: '3.6'
-      install:
-          - pipenv install -e .[all]
       stage: tox
     - env:
         - TOXENV=py37
       python: '3.7'
-      install:
-          - pipenv install -e .[all]
       stage: tox
     - stage: test
       python: '3.7'
@@ -34,13 +30,13 @@ matrix:
 stages:
     - name: test
     - name: tox
-    - name: answers
-      if: branch = master
+
 before_install:
   - echo -e "machine github.com\n  login $CI_USER_TOKEN" > ~/.netrc
   - python --version
   - uname -a
   - lsb_release -a || true
+
 install:
   - python -mpip install --progress-bar=off tox-travis -rci/requirements.txt
   - virtualenv --version
