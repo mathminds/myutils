@@ -17,6 +17,7 @@ class suffix_preserving_atomic_file(atomic_file):
         # return file_name + '-luigi-tmp-%09d' % random.randrange(0, 1e10) + '.'+file_extension
 
 
+
 class BaseAtomicProviderLocalTarget(LocalTarget):
     # Allow some composability of atomic handling
     atomic_provider = atomic_file

@@ -32,7 +32,7 @@ def read(*names, **kwargs):
         raise
 
 
-extras = {'luigi': ['luigi>=2.8.9']}
+extras = {'luigi': ['luigi']}
 extras['all'] = [item for sublist in extras.values() for item in sublist]
 
 setup(
@@ -90,9 +90,9 @@ setup(
         "pyarrow",
         "openpyxl",
         "setuptools_scm",
-        # "luigi",
+        "luigi",
     ],
-    extras_require=extras,
+    # extras_require=extras,
     setup_requires=[
         'setuptools_scm>=3.3.1',
     ],
