@@ -16,8 +16,8 @@ matrix:
     - env:
         - TOXENV=py37
       python: '3.7'
-
       stage: tox
+
     - stage: test
       python: '3.7'
       install:
@@ -35,7 +35,7 @@ stages:
     - name: tox
 
 before_install:
-#  - echo -e "machine github.com\n  login $CI_USER_TOKEN" > ~/.netrc
+  - echo -e "machine github.com\n  login $CI_USER_TOKEN" > ~/.netrc
   - python --version
   - uname -a
   - lsb_release -a || true

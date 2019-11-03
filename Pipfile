@@ -5,14 +5,14 @@ verify_ssl = true
 
 [dev-packages]
 #setuptools-scm = "*"
-pytest = "*"
+#pytest = "*"
 pytest-cov = "*"
-tox = "*"
+#tox = "*"
 tox-travis = "*"
 
 [packages]
-csci-utils = {editable = true,extras = ["all"],path = "."}
-setuptools-scm = "*"
+csci-utils = {editable = true,path = "."}
+#setuptools-scm = "*"
 
 [requires]
 python_version = "3.7"
