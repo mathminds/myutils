@@ -86,7 +86,7 @@ setup(
         "pyarrow",
         "openpyxl",
         "setuptools_scm",
-        "luigi",
+        # "luigi",
     ],
     extras_require=extras,
     # setup_requires=[

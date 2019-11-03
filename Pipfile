@@ -4,14 +4,13 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-setuptools-scm = "*"
 pytest = "*"
 pytest-cov = "*"
 tox = "*"
 tox-travis = "*"
 
 [packages]
-csci-utils = {editable = true,git = "https://github.com/csci-e-29/2019fa-csci-utils-mathuser0"}
+csci-utils = {editable = true,extras = ["all"], path = "."}
 setuptools-scm = "*"
 
 [requires]
