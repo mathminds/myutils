@@ -30,16 +30,18 @@ def read(*names, **kwargs):
         raise
 
 
+extras = {'luigi' : ['luigi>=2.8.9']}
+extras['all'] = [item for sublist in extras.values() for item in sublist]
 
 
 setup(
     name="csci-utils",
     use_scm_version={
+        "local_scheme": "node-and-timestamp",
         "write_to": "src/csci_utils/_version.py",
-        # 'write_to_template': '__version__ = "{version}"',
-        # 'tag_regex': r'^(?P<prefix>v)?(?P<version>[^\+]+)(?P<suffix>.*)?$',
+        "fallback_version": "0.0.0",
     } if not DOCKER_DEV else False,
-    description="An example package. Generated with cookiecutter-pylibrary.",
+    description="CSCI Utils Package",
     long_description="%s\n%s"
     % (
         re.compile("^.. start-badges.*^.. end-badges", re.M | re.S).sub(
@@ -65,8 +67,6 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: Implementation :: CPython",
-        "Programming Language :: Python :: Implementation :: PyPy",
         # # uncomment if you test on these interpreters:
         # 'Programming Language :: Python :: Implementation :: IronPython',
         # 'Programming Language :: Python :: Implementation :: Jython',
@@ -74,11 +74,6 @@ setup(
         "Topic :: Utilities",
         "Private :: Do Not Upload",
     ],
-    project_urls={
-        # 'Documentation': 'https://2019fa-csci-utils-mathuser0.readthedocs.io/',
-        # 'Changelog': 'https://2019fa-csci-utils-mathuser0.readthedocs.io/en/latest/changelog.html',
-        # "Issue Tracker": "https://github.com/csci-e-29/2019fa-csci-utils-mathuser0/issues"
-    },
     keywords=[
         # eg: 'keyword1', 'keyword2', 'keyword3',
     ],
@@ -93,11 +88,7 @@ setup(
         "setuptools_scm",
         "luigi",
     ],
-    extras_require={
-        # eg:
-        #   'rst': ['docutils>=0.11'],
-        #   ':python_version=="2.6"': ['argparse'],
-    },
+    extras_require=extras,
     # setup_requires=[
     #     'setuptools_scm>=3.3.1',
     # ],

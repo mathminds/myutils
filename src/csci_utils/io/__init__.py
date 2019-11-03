@@ -45,9 +45,22 @@ class SuffixWriter(AtomicWriter):
 
 
 @contextmanager
-def atomic_write(file, mode="w", as_file=True, new_default="asdf", **kwargs):
+def atomic_write(file, mode="w", as_file=True, overwrite=False, **kwargs):
+    """Function that performs atomic writes using the atomic_write function from atomicwrites as a backend
 
-    # You can override things just fine...
+    :param file str or Path-like: target file name
+    :param mode str: write mode that gets passed down to io.open()
+    :param as_file bool: flag to either yield file handle if True or file name of temporary file if False
+    :param overwrite bool: flag that tells to overwrite existing target file if True or raise FileExistsError if False
+    :param **kwargs dict: kwargs that ultimately get passed down to io.open()
+    """
+
+    # SuffixWriter/AtomicWriter handles these as kwargs
+    kwargs["mode"] = mode
+    kwargs["overwrite"] = overwrite
+
+
+    # use original atomic write as backend, but pass in SuffixWriter as writer class
     with _backend_writer(file, writer_cls=SuffixWriter, **kwargs) as f:
         # Don't forget to handle the as_file logic!
         # try:
