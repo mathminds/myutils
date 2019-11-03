@@ -16,7 +16,9 @@ from setuptools import setup
 
 from ast import literal_eval
 import os
+
 DOCKER_DEV = literal_eval(os.environ.get("DEV_CSCI_UTILS", "0"))
+
 
 def read(*names, **kwargs):
     try:
@@ -30,9 +32,8 @@ def read(*names, **kwargs):
         raise
 
 
-extras = {'luigi' : ['luigi>=2.8.9']}
+extras = {'luigi': ['luigi>=2.8.9']}
 extras['all'] = [item for sublist in extras.values() for item in sublist]
-
 
 setup(
     name="csci-utils",
@@ -40,6 +41,8 @@ setup(
         "local_scheme": "node-and-timestamp",
         "write_to": "src/csci_utils/_version.py",
         "fallback_version": "0.0.0",
+        'write_to_template': '__version__ = "{version}"',
+        'tag_regex': r'^(?P<prefix>v)?(?P<version>[^\+]+)(?P<suffix>.*)?$',
     } if not DOCKER_DEV else False,
     description="CSCI Utils Package",
     long_description="%s\n%s"
@@ -87,9 +90,9 @@ setup(
         "pyarrow",
         "openpyxl",
         "setuptools_scm",
-        "luigi",
+        # "luigi",
     ],
-    # extras_require=extras,
+    extras_require=extras,
     setup_requires=[
         'setuptools_scm>=3.3.1',
     ],

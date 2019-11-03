@@ -1,11 +1,20 @@
 from luigi.local_target import LocalTarget, atomic_file
 from contextlib import contextmanager
 import random
+from pathlib import Path
+
 
 class suffix_preserving_atomic_file(atomic_file):
     def generate_tmp_path(self, path):
-        file_name, file_extension = '.'.join(path.split('.')[:-1]), '.'.join(path.split('/')[-1].split('.')[1:])
-        return file_name + '-luigi-tmp-%09d' % random.randrange(0, 1e10) + file_extension
+        if path == None:
+            path = self.path
+
+        suffix = "".join(Path(path).suffixes)
+        return path + '-luigi-tmp-%09d' % random.randrange(0, 1e10) + suffix
+
+        #
+        # file_name, file_extension = '.'.join(path.split('.')[:-1]), '.'.join(path.split('/')[-1].split('.')[2:])
+        # return file_name + '-luigi-tmp-%09d' % random.randrange(0, 1e10) + '.'+file_extension
 
 
 class BaseAtomicProviderLocalTarget(LocalTarget):
