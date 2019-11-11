@@ -9,6 +9,9 @@ class Requirement:
         self.params = params
 
     def __get__(self, task, cls):
+        if task is None:
+            return self
+
         return task.clone(
             self.task_class,
             **self.params)
@@ -72,7 +75,7 @@ class TargetOutput:
 
     def __get__(self, task, cls):
 
-        filename = self.base_dir+'/'+ self.file_pattern.format(task=task) + self.ext
+        filename = self.file_pattern.format(task=task) + self.ext
         return self.target_class(filename, **self.target_kwargs)
 
 
