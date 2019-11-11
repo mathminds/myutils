@@ -43,3 +43,5 @@ class BaseAtomicProviderLocalTarget(LocalTarget):
 
 class SuffixPreservingLocalTarget(BaseAtomicProviderLocalTarget):
     atomic_provider = suffix_preserving_atomic_file
+
+
