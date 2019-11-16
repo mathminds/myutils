@@ -92,6 +92,8 @@ setup(
         "setuptools_scm",
         "luigi",
         "dask",
+        "toolz",
+        "fsspec",
     ],
     extras_require=extras,
     setup_requires=[
