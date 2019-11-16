@@ -32,7 +32,11 @@ def read(*names, **kwargs):
         raise
 
 
-extras = {'luigi': ['luigi'], 'dask':['dask']}
+extras = {
+          'luigi': ['luigi >= 2.8.9', ],
+          'dask': ['dask >= 2.8.0', 'fsspec', 'cytoolz', 'toolz'],
+          'parquet': ['fastparquet'],
+          }
 extras['all'] = [item for sublist in extras.values() for item in sublist]
 
 setup(

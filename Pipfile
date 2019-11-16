@@ -11,7 +11,7 @@ pytest-cov = "*"
 tox-travis = "*"
 
 [packages]
-csci-utils = {editable = true,path = "."}
+csci-utils = {editable = true, extras = ["all"], path = "."}
 #setuptools-scm = "*"
 toolz = "*"
 fsspec = "*"
