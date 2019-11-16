@@ -204,7 +204,7 @@ class BaseDaskTarget(Target):
 
 
 class ParquetTarget(BaseDaskTarget):
-    def __init__(self, path, glob="*.parquet", flag=FLAG, storage_options=None):
+    def __init__(self, path='./data/', glob="*.parquet", flag=FLAG, storage_options=None):
         super().__init__(path=path, glob=glob, flag=flag,
                          storage_options=storage_options)
 
@@ -218,7 +218,7 @@ class ParquetTarget(BaseDaskTarget):
 
 
 class CSVTarget(BaseDaskTarget):
-    def __init__(self, path, glob="*.csv", flag=FLAG, storage_options=None):
+    def __init__(self, path='./data/', glob="*.csv", flag=FLAG, storage_options=None):
         super().__init__(path=path, glob=glob, flag=flag,
                          storage_options=storage_options)
 
