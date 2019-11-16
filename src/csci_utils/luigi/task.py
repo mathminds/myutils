@@ -32,10 +32,8 @@ class Requires:
                 with self.other.output().open('r') as f:
                     ...
 
-        >>> MyTask().requires()
-        {'other': OtherTask()}
-
-    """
+        # >>> MyTask().requires()
+        {'other': OtherTask()}    """
 
     def __get__(self, task, cls):
         if task is None:
@@ -53,28 +51,22 @@ class Requires:
         :returns: requirements compatible with `task.requires()`
         :rtype: dict
         """
-        # Search task.__class__ for Requirement instances
-        # return
         return {k: getattr(task, k) for k in dir(task.__class__) if isinstance(getattr(task.__class__, k), Requirement)}
 
 
 class TargetOutput:
-
-    def __init__(self, base_dir='data', file_pattern='{task.__class__.__name__}', #}-{salt}',
-                 ext='.txt', target_class=LocalTarget, **target_kwargs):
-        self.base_dir = base_dir
+    def __init__(self, file_pattern='{task.__class__.__name__}', ext='.txt', target_class=LocalTarget, **target_kwargs):
         self.file_pattern = file_pattern
         self.target_class = target_class
         self.ext = ext
         self.target_kwargs = target_kwargs
 
-    def __call__(self, task, cls):
+    def __get__(self, task, cls):
         if task is None:
             return self
         return lambda: self(task)
 
-    def __get__(self, task, cls):
-
+    def __call__(self, task):
         filename = self.file_pattern.format(task=task) + self.ext
         return self.target_class(filename, **self.target_kwargs)
 
@@ -114,11 +106,10 @@ def get_salted_version(task):
     return sha256(msg.encode()).hexdigest()
 
 class SaltedOutput(TargetOutput):
-
-    def __init__(self, base_dir='data', file_pattern='{task.__class__.__name__}-{salt}', ext='.txt',
-                 target_class=LocalTarget, **target_kwargs):
-        super().__init__(base_dir, file_pattern, ext, target_class, **target_kwargs)
+    def __init__(self, file_pattern='{task.__class__.__name__}-{salt}', ext='.txt', target_class=LocalTarget,
+                 **target_kwargs):
+        super().__init__(file_pattern, ext, target_class, **target_kwargs)
 
     def __get__(self, task, cls):
-        filename = self.base_dir + '/' + self.file_pattern.format(task=task, salt = get_salted_version(task)[:8]) + self.ext
+        filename = self.file_pattern.format(task=task, salt = get_salted_version(task)[:8]) + self.ext
         return self.target_class(filename, **self.target_kwargs)

@@ -28,7 +28,7 @@ class BaseDaskTarget(Target):
     are identical to other Hadoop and alike systems.
     """
 
-    def __init__(self, path, glob=None, flag=FLAG, storage_options=None):
+    def __init__(self, path, glob=None, flag=FLAG, storage_options=dict(requester_pays=True)):
         """
 
         :param str path: Directory the collection is stored in.  May be remote
@@ -204,8 +204,9 @@ class BaseDaskTarget(Target):
 
 
 class ParquetTarget(BaseDaskTarget):
-    def __init__(self, path, **kwargs):
-        super().__init__(path, **kwargs)
+    def __init__(self, path, glob="*.parquet", flag=FLAG, storage_options=None):
+        super().__init__(path=path, glob=glob, flag=flag,
+                         storage_options=storage_options)
 
     @classmethod
     def _write(cls, collection, path,  **kwargs):
@@ -217,13 +218,19 @@ class ParquetTarget(BaseDaskTarget):
 
 
 class CSVTarget(BaseDaskTarget):
-    def __init__(self, path, **kwargs):
-        super().__init__(path, **kwargs)
+    def __init__(self, path, glob="*.csv", flag=FLAG, storage_options=None):
+        super().__init__(path=path, glob=glob, flag=flag,
+                         storage_options=storage_options)
+
 
     @classmethod
     def _write(cls, collection, path, **kwargs):
+        path += '/*.csv'
         return collection.to_csv(path, **kwargs)
 
     @classmethod
     def _read(cls, path, **kwargs):
-        return read_csv(path, **kwargs)
+        data = read_csv(path, **kwargs)
+        if 'Unnamed: 0' in data.columns:
+            data = data.set_index('Unnamed: 0')
+        return data

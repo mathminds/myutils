@@ -11,8 +11,10 @@ pytest-cov = "*"
 tox-travis = "*"
 
 [packages]
-csci-utils = {editable = true,extras = ["all"],path = "."}
+csci-utils = {editable = true,path = "."}
 #setuptools-scm = "*"
+toolz = "*"
+fsspec = "*"
 
 [requires]
 python_version = "3.7"
