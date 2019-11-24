@@ -1,6 +1,7 @@
-FROM python:3.7 AS base
 ARG DEV_CSCI_UTILS
+FROM python:3.7 AS base
 
+RUN apt-get update && apt-get install -y groff
 
 ENV \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -18,6 +19,10 @@ ENV \
 RUN pip install pipenv
 
 WORKDIR /app
+COPY AUTHORS.rst .
+COPY CHANGELOG.rst .
+COPY CONTRIBUTING.rst .
+COPY README.rst .
 COPY setup.py .
 COPY src/csci_utils/__init__.py src/csci_utils/__init__.py
 COPY Pipfile .

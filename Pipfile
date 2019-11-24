@@ -4,17 +4,11 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-#setuptools-scm = "*"
-#pytest = "*"
+pytest = "*"
 pytest-cov = "*"
-#tox = "*"
-tox-travis = "*"
 
 [packages]
-csci-utils = {editable = true, extras = ["all"], path = "."}
-#setuptools-scm = "*"
-toolz = "*"
-fsspec = "*"
+csci-utils = {editable = true,extras = ["workflow"],path = "."}
 
 [requires]
 python_version = "3.7"

@@ -1,7 +1,39 @@
 from hashlib import sha256
-
-from luigi import LocalTarget
 from luigi.task import flatten
+
+import os
+
+from luigi import Task, LocalTarget, Parameter
+from luigi.format import Nop
+
+
+class Download(Task):
+    """
+    Abstract class to support downloading files from S3
+    """
+
+    S3_ROOT = "s3://ymdavis-csci-e-29/"
+    LOCAL_ROOT = Parameter(default=os.path.abspath("data"))
+    SHARED_RELATIVE_PATH = "pset_4/"
+    S3_DOWNLOAD_PATH = os.path.join(S3_ROOT, SHARED_RELATIVE_PATH)
+
+    def requires(self):
+        # This is not implemented to allow the child class
+        # to determin source for download
+        raise NotImplementedError
+
+    def output(self):
+        # Create file path using local root and provided downloadFile path
+        file_path = os.path.join(
+            "{}".format(self.LOCAL_ROOT), "{}".format(self.downloadFile)
+        )
+        return LocalTarget(file_path, format=Nop)
+
+    def run(self):
+        # read in from source and write directly to target
+        with self.input().open("r") as r, self.output().open("w") as w:
+            w.write(r.read())
+
 
 class Requirement:
     def __init__(self, task_class, **params):
@@ -12,9 +44,7 @@ class Requirement:
         if task is None:
             return self
 
-        return task.clone(
-            self.task_class,
-            **self.params)
+        return task.clone(self.task_class, **self.params)
 
 
 class Requires:
@@ -32,15 +62,17 @@ class Requires:
                 with self.other.output().open('r') as f:
                     ...
 
-        # >>> MyTask().requires()
-        {'other': OtherTask()}    """
+        MyTask().requires()
+        {'other': OtherTask()}
+
+    """
 
     def __get__(self, task, cls):
         if task is None:
             return self
 
         # Bind self/task in a closure
-        return lambda : self(task)
+        return lambda: self(task)
 
     def __call__(self, task):
         """Returns the requirements of a task
@@ -51,14 +83,28 @@ class Requires:
         :returns: requirements compatible with `task.requires()`
         :rtype: dict
         """
-        return {k: getattr(task, k) for k in dir(task.__class__) if isinstance(getattr(task.__class__, k), Requirement)}
+        # Search task.__class__ for Requirement instances
+        # return
+        ...
+
+        return {
+            k: getattr(task, k)
+            for k, v in task.__class__.__dict__.items()
+            if isinstance(v, Requirement)
+        }
 
 
 class TargetOutput:
-    def __init__(self, file_pattern='{task.__class__.__name__}', ext='.txt', target_class=LocalTarget, **target_kwargs):
+    def __init__(
+        self,
+        file_pattern="{task.__class__.__name__}",
+        ext=".txt",
+        target_class=LocalTarget,
+        **target_kwargs
+    ):
         self.file_pattern = file_pattern
-        self.target_class = target_class
         self.ext = ext
+        self.target_class = target_class
         self.target_kwargs = target_kwargs
 
     def __get__(self, task, cls):
@@ -67,8 +113,11 @@ class TargetOutput:
         return lambda: self(task)
 
     def __call__(self, task):
-        filename = self.file_pattern.format(task=task) + self.ext
+        filename = self.file_pattern.format(
+            task=task, ext=self.ext, **self.target_kwargs
+        )
         return self.target_class(filename, **self.target_kwargs)
+
 
 
 def get_salted_version(task):

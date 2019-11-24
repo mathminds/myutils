@@ -28,7 +28,7 @@ class BaseDaskTarget(Target):
     are identical to other Hadoop and alike systems.
     """
 
-    def __init__(self, path, glob=None, flag=FLAG, storage_options=dict(requester_pays=True)):
+    def __init__(self, path, glob=None, flag=FLAG, storage_options=None):
         """
 
         :param str path: Directory the collection is stored in.  May be remote
@@ -99,7 +99,7 @@ class BaseDaskTarget(Target):
         fs = self.fs
         if self.flag:
             ff = self._join(self.path, self.flag)
-            if hasattr(fs, 'exists'):
+            if hasattr(fs, "exists"):
                 # Unfortunately, not every dask fs implemenents this!
                 return fs.exists(ff)
 
@@ -194,6 +194,11 @@ class BaseDaskTarget(Target):
 
     # Abstract interface: implement for various storage formats
 
+    def confirm_path(self, path):
+        if not path.endswith(self._get_sep()):
+            return path + self._get_sep()
+        return path
+
     @classmethod
     def _read(cls, path, **kwargs):
         raise NotImplementedError()
@@ -204,33 +209,39 @@ class BaseDaskTarget(Target):
 
 
 class ParquetTarget(BaseDaskTarget):
-    def __init__(self, path='./data/', glob="*.parquet", flag=FLAG, storage_options=None):
-        super().__init__(path=path, glob=glob, flag=flag,
-                         storage_options=storage_options)
 
-    @classmethod
-    def _write(cls, collection, path,  **kwargs):
-        return collection.to_parquet(path, **kwargs)
+    def __init__(self, path, glob=None, flag=FLAG, storage_options=None):
+        path = self.confirm_path(path)
+        super().__init__(
+            path=path, glob=glob, flag=flag, storage_options=storage_options
+        )
 
     @classmethod
     def _read(cls, path, **kwargs):
-        return read_parquet(path, **kwargs)
-
-
-class CSVTarget(BaseDaskTarget):
-    def __init__(self, path='./data/', glob="*.csv", flag=FLAG, storage_options=None):
-        super().__init__(path=path, glob=glob, flag=flag,
-                         storage_options=storage_options)
-
+        return read_parquet(path=path, **kwargs)
 
     @classmethod
     def _write(cls, collection, path, **kwargs):
-        path += '/*.csv'
-        return collection.to_csv(path, **kwargs)
+        return collection.to_parquet(path=path, **kwargs)
+
+
+class CSVTarget(BaseDaskTarget):
+
+    def __init__(self, path, glob=None, flag=FLAG, storage_options=None):
+        path = self.confirm_path(path)
+        super().__init__(
+            path=path, glob=glob, flag=flag, storage_options=storage_options
+        )
 
     @classmethod
     def _read(cls, path, **kwargs):
-        data = read_csv(path, **kwargs)
-        if 'Unnamed: 0' in data.columns:
-            data = data.set_index('Unnamed: 0')
-        return data
+        return read_csv(path, **kwargs)
+
+    @classmethod
+    def _write(cls, collection, path, **kwargs):
+        return collection.to_csv(filename=path, **kwargs)
+
+    def get_path_for_write(self):
+        if self.glob:
+            return self._join(self.path, self.glob)
+        return self.path.rstrip(self._get_sep())
