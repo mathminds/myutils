@@ -145,10 +145,10 @@ class TargetOutput:
 
     def __get__(self, task, cls):
         if task is None:
-            print('asdf')
+            print('TargetOutput get')
             return self
 
-        print('asdf')
+        print('TargetOutput get')
         return lambda: self(task)
 
     def __call__(self, task):
@@ -156,7 +156,7 @@ class TargetOutput:
             task=task, ext=self.ext, **self.target_kwargs
         )
         print(filename.__repr__())
-        print('asdf')
+        print('TargetOutput call')
         return self.target_class(filename, **self.target_kwargs)
 
 class SaltedOutput(TargetOutput):
@@ -165,7 +165,11 @@ class SaltedOutput(TargetOutput):
         super().__init__(file_pattern=file_pattern, ext=ext, target_class=target_class, **target_kwargs)
 
     def __call__(self, task):
-        filename = self.file_pattern.format(task=task, salt = get_salted_version(task)[:8]) + self.ext
+        filename = self.file_pattern.format(
+            task=task, salt = get_salted_version(task)[:8], ext=self.ext, **self.target_kwargs
+        )
+        print('salted output running')
+        # filename = self.file_pattern.format(task=task, salt = get_salted_version(task)[:8]) + self.ext
         return self.target_class(filename, **self.target_kwargs)
 
 
