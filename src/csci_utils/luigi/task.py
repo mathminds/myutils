@@ -164,7 +164,7 @@ class SaltedOutput(TargetOutput):
                  **target_kwargs):
         super().__init__(file_pattern=file_pattern, ext=ext, target_class=target_class, **target_kwargs)
 
-    def __call__(self, task, cls):
+    def __call__(self, task):
         filename = self.file_pattern.format(task=task, salt = get_salted_version(task)[:8]) + self.ext
         return self.target_class(filename, **self.target_kwargs)
 
