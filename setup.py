@@ -30,6 +30,8 @@ def read(*names, **kwargs):
             return ""
         raise
 
+extras = {'workflow': ['luigi','boto3','moto','dask[dataframe]','toolz'],}
+
 setup(
     name='csci-utils',
     use_scm_version={'local_scheme': 'dirty-tag','root': '.', 'relative_to': __file__, 'write_to': 'src/csci_utils/_version.py',
@@ -74,9 +76,7 @@ setup(
         'pyarrow',
         'xlwt'
     ],
-    extras_require={
-        'workflow': ['luigi','boto3','moto','dask[dataframe]','toolz'],
-    },
+    extras_require=extras,
     setup_requires=[
         'setuptools_scm>=3.3.1'
     ],
