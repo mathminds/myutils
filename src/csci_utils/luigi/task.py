@@ -94,31 +94,6 @@ class Requires:
         }
 
 
-class TargetOutput:
-    def __init__(
-        self,
-        file_pattern="{task.__class__.__name__}",
-        ext=".txt",
-        target_class=LocalTarget,
-        **target_kwargs
-    ):
-        self.file_pattern = file_pattern
-        self.ext = ext
-        self.target_class = target_class
-        self.target_kwargs = target_kwargs
-
-    def __get__(self, task, cls):
-        if task is None:
-            return self
-        return lambda: self(task)
-
-    def __call__(self, task):
-        filename = self.file_pattern.format(
-            task=task, ext=self.ext, **self.target_kwargs
-        )
-        return self.target_class(filename, **self.target_kwargs)
-
-
 
 def get_salted_version(task):
     """Create a salted id/version for this task and lineage
@@ -154,11 +129,44 @@ def get_salted_version(task):
     )
     return sha256(msg.encode()).hexdigest()
 
+
+class TargetOutput:
+    def __init__(
+        self,
+        file_pattern="{task.__class__.__name__}",
+        ext=".txt",
+        target_class=LocalTarget,
+        **target_kwargs
+    ):
+        self.file_pattern = file_pattern
+        self.ext = ext
+        self.target_class = target_class
+        self.target_kwargs = target_kwargs
+
+    def __get__(self, task, cls):
+        if task is None:
+            print('asdf')
+            return self
+
+        print('asdf')
+        return lambda: self(task)
+
+    def __call__(self, task):
+        filename = self.file_pattern.format(
+            task=task, ext=self.ext, **self.target_kwargs
+        )
+        print(filename.__repr__())
+        print('asdf')
+        return self.target_class(filename, **self.target_kwargs)
+
 class SaltedOutput(TargetOutput):
     def __init__(self, file_pattern='{task.__class__.__name__}-{salt}', ext='.txt', target_class=LocalTarget,
                  **target_kwargs):
-        super().__init__(file_pattern, ext, target_class, **target_kwargs)
+        super().__init__(file_pattern=file_pattern, ext=ext, target_class=target_class, **target_kwargs)
 
-    def __get__(self, task, cls):
+    def __call__(self, task, cls):
         filename = self.file_pattern.format(task=task, salt = get_salted_version(task)[:8]) + self.ext
         return self.target_class(filename, **self.target_kwargs)
+
+
+
