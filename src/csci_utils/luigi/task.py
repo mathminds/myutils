@@ -133,7 +133,7 @@ def get_salted_version(task):
 class TargetOutput:
     def __init__(
         self,
-        file_pattern="{task.__class__.__name__}",
+        file_pattern="data/{task.__class__.__name__}",
         ext=".txt",
         target_class=LocalTarget,
         **target_kwargs
@@ -145,10 +145,10 @@ class TargetOutput:
 
     def __get__(self, task, cls):
         if task is None:
-            print('TargetOutput get')
+            print('TargetOutput get no task')
             return self
 
-        print('TargetOutput get')
+        print('TargetOutput get task exists')
         return lambda: self(task)
 
     def __call__(self, task):
@@ -160,7 +160,7 @@ class TargetOutput:
         return self.target_class(filename, **self.target_kwargs)
 
 class SaltedOutput(TargetOutput):
-    def __init__(self, file_pattern='{task.__class__.__name__}-{salt}', ext='.txt', target_class=LocalTarget,
+    def __init__(self, file_pattern='data/{task.__class__.__name__}-{salt}', ext='.txt', target_class=LocalTarget,
                  **target_kwargs):
         super().__init__(file_pattern=file_pattern, ext=ext, target_class=target_class, **target_kwargs)
 
